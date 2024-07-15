@@ -27,6 +27,7 @@ public class AuthController {
                 Map<String, String> response = new HashMap<>();
                 response.put("token", "dummy-token");
                 response.put("role", existingUser.getRole());
+                response.put("username", existingUser.getUsername());
                 return response;
             } else {
                 throw new RuntimeException("Credenciais inválidas");
