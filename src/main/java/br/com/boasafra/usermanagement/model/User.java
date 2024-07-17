@@ -1,9 +1,9 @@
 package br.com.boasafra.usermanagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -16,6 +16,15 @@ public class User {
     private Number phone;
     private String password;
     private String role;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_cnpj",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "cnpj_id")
+    )
+    private Set<Cnpj> cnpjs = new HashSet<>();
 
     public Long getId() {
         return id;
