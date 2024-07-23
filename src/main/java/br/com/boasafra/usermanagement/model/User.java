@@ -23,6 +23,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
     @JsonIgnore
     @OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
     private List<Contract> contracts;

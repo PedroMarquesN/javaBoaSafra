@@ -16,6 +16,13 @@ public class ContractController {
     @Autowired
     private ContractService contractService;
 
+
+    @GetMapping
+    public ResponseEntity<List<Contract>> getAllContracts() {
+        List<Contract> contracts = contractService.getAllContracts();
+        return ResponseEntity.ok(contracts);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Contract> createContract(@RequestParam Long clientId, @RequestParam double quantity) {
         Contract contract = contractService.createContract(clientId, quantity);
@@ -23,10 +30,10 @@ public class ContractController {
     }
 
     @PostMapping("/split/{contractId}")
-    public ResponseEntity<String> splitContract(@PathVariable UUID contractId, @RequestParam Long clientId, @RequestParam double splitQuantity) {
+    public ResponseEntity<String> splitContract(@PathVariable UUID contractId, @RequestParam double splitQuantity, @RequestParam Long clientId) {
         try {
             contractService.splitContract(clientId, contractId, splitQuantity);
-            return new ResponseEntity<>("Contract split successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Contrato dividido com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

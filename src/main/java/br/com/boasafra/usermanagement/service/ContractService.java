@@ -24,6 +24,9 @@ public class ContractService {
         this.contractRepository = contractRepository;
     }
 
+    public List<Contract> getAllContracts() {
+        return contractRepository.findAll();
+    }
     @Transactional
     public Contract createContract(Long clientId, double quantity) {
         User client = userRepository.findById(clientId)
