@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-
-    @PostMapping("/users")
+    @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .findFirst().orElseThrow(() -> new RuntimeException("User role not found")).getAuthority();
@@ -31,15 +30,21 @@ public class UserController {
         return ResponseEntity.ok(newUser);
     }
 
+    @PreAuthorize("hasRole('Admin')")
+    @PostMapping("/create")
+    public User createUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
 
     @GetMapping
     public List<User> getUsers() {
         return userService.getAllUsers();
     }
-    @PreAuthorize("hasRole('Admin')")
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        User updatedUser = userService.updateUser(id, userDetails);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @GetMapping("/{id}")

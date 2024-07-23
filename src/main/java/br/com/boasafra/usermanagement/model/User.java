@@ -1,9 +1,12 @@
 package br.com.boasafra.usermanagement.model;
 
+import br.com.boasafra.usermanagement.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
 
 @Entity
 public class User {
@@ -12,19 +15,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String name;
     private String email;
-    private Number phone;
+    private String phone;
+    private String cnpj;
     private String password;
-    private String role;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @JsonIgnore
+    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
+    private List<Contract> contracts;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_cnpj",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "cnpj_id")
-    )
-    private Set<Cnpj> cnpjs = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -40,21 +42,27 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-
     }
 
+    public String getName() {
+        return name;
+    }
+    public String setName(String name) {
+        return this.name = name;
+    }
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public Number getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Number phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -66,12 +74,27 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+
+    public List<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
     }
 }

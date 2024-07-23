@@ -26,7 +26,7 @@ public class AuthController {
                 // Construir a resposta com token e role
                 Map<String, String> response = new HashMap<>();
                 response.put("token", "dummy-token");
-                response.put("role", existingUser.getRole());
+                response.put("role", existingUser.getRole().name());
                 response.put("username", existingUser.getUsername());
                 return response;
             } else {
